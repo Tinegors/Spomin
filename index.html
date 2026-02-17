@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+  <meta charset="UTF-8">
+  <title>Minolovec</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- LEVI DEL -->
+  <div class="left">
+    <img src="items/minolovec.jpg" class="ship">
+
+    <h1>Minolovec</h1>
+
+    <p class="instructions">
+      Navodila za igro:<br><br>
+      Igro se začne v praznem polju. S kliki po zakritih poljih
+      odkrivate mesta postavljenih min. Polja, ki se dotikajo min,
+      imajo zapisano število, koliko polj z minami se dotikajo.
+      Polja z minami morajo ostati nedotaknjena.
+      <br><br>
+      Če menite, da je na določenem polju mina, jo lahko označite
+      z zastavico. Novo igro začnete s klikom na gumb "Nova igra".
+    </p>
+
+    <div class="settings">
+      Želena velikost plošče:
+      <select id="size">
+        <option value="10">10x10</option>
+        <option value="15">15x15</option>
+      </select>
+    </div>
+
+    <div class="info">
+      Število min na plošči: <span id="mineCount">8</span>
+    </div>
+
+    <button onclick="newGame()">Nova igra</button>
+
+    <div class="stats">
+      <p>Število postavljenih zastavic: <span id="flags">0</span></p>
+      <p>Število odkritih polj: <span id="open">0</span></p>
+      <p>Čas igranja: <span id="time">00:00</span></p>
+    </div>
+  </div>
+
+  <!-- DESNI DEL -->
+  <div class="right">
+    <div id="board"></div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

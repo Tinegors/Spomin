@@ -1,0 +1,102 @@
+/* Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #f4f6f8;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #333;
+}
+
+.vse {
+    text-align: center;
+    background: #ffffff;
+    display: flex;
+    gap: 10%;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    width: 90%;
+    max-width: 1200px;
+    height: 78%;
+}
+
+.desno{
+    width: 70%;
+}
+
+h1 {
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+.set {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 20%;
+}
+
+#igra {
+    display: grid;
+    border: 2px solid #888;
+    background: #636363;
+  }
+
+select, button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    font-size: 14px;
+}
+
+button {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+button:hover {
+    background: #4338ca;
+}
+
+.igra {
+    display: grid;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.card:hover {
+    background: #8e9eb4;
+}
+
+.card.flipped {
+    background: #4f46e5;
+    color: white;
+}

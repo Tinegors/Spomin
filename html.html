@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Igra Spomin</title>
+    <link rel="stylesheet" href="css.css">
+    
+
+</head>
+<body>
+    <h1>🧠 Spomin</h1>
+    <div class="vse">
+        
+        <div class="set">
+            <select id="size">
+                <option value="2">2 x 2</option>
+                <option value="4" selected>4 x 4</option>
+                <option value="6">6 x 6</option>
+                <option value="8">8 x 8</option>
+            </select>
+            <button id="start" onclick="NaloziIgro()">Začni igro</button>
+            <p id="timer">00:00</p>
+        </div>
+
+        <div  class="desno">
+            <div id="igra"class="igra"></div>
+        </div>
+    </div>
+    <script src="js.js"></script>
+</body>
+
+</html>
