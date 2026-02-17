@@ -30,7 +30,7 @@ body {
 }
 
 .desno{
-    width: 70%;
+    width: 753px;
 }
 
 h1 {
@@ -50,8 +50,6 @@ h1 {
 
 #igra {
     display: grid;
-    border: 2px solid #888;
-    background: #636363;
   }
 
 select, button {
@@ -76,11 +74,11 @@ button:hover {
 .igra {
     display: grid;
     gap: 10px;
-    margin-top: 10px;
 }
 
 .card {
     background: #ffffff;
+    border:2px solid #333 ;
     border-radius: 12px;
     aspect-ratio: 1 / 1;
     display: flex;
@@ -99,4 +97,5 @@ button:hover {
 .card.flipped {
     background: #4f46e5;
     color: white;
+    
 }
