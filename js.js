@@ -32,17 +32,17 @@
 
 function NaloziIgro() {
 
-    slike8 = [
+    slike[8] = [
         ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
         ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
     ];
 
-    slike6 = [
+    slike[6] = [
         ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
         ["🌊", 2], ["🔥", 2]
     ];
 
-    slike4 = [
+    slike[4] = [
         ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2]
     ];
 
@@ -70,22 +70,22 @@ function NaloziIgro() {
 
         let rnd = Math.floor(Math.random() * izbraneSlike.length);
         
-        if(izbraneSlike[rnd][1]>0){
-            revealed.push(false);
+        if(izbraneSlike[rnd][1] > 0){
 
+            revealed.push(false);
+        
             const card = document.createElement("div");
             card.classList.add("card");
             card.textContent = "?";
+        
             board[i] = izbraneSlike[rnd][0];
-            izbraneSlike[rnd][1]-=1;
+            izbraneSlike[rnd][1] -= 1;
+        
+            let index = i;
+            card.onclick = () => reveal(index, card);
+        
             igraDiv.appendChild(card);
-
-
-            card.onclick = () => reveal(i-1, card);
-            card.oncontextmenu = e => {
-                e.preventDefault();
-                toggleFlag(cell);
-            };
+        
             i++;
         }
     }
@@ -100,36 +100,38 @@ function cas() {
 }
 
 function reveal(i, card) {
-    revelCount++
-    if(revelCount==0){
-        if (revealed[i]) return;
-        revealed[i] = true;
-        card.textContent=board[i]
 
-        card.classList.add("revealed");
-        reveledIndex1=i;
+    if (revealed[i]) return;
 
-    }
-    else if(revelCount==1){
-        if (revealed[i]) return;
+    revealed[i] = true;
+    card.textContent = board[i];
+    card.classList.add("revealed");
 
-        revealed[i] = true;
-        card.textContent=board[i]
+    if (revelCount === 0) {
+        reveledIndex1 = i;
+        revelCount = 1;
+    } 
+    else {
+        reveledIndex2 = i;
 
-        card.classList.add("revealed");
-        reveledIndex2=i;
+        if (board[reveledIndex1] !== board[reveledIndex2]) {
+            
+            setTimeout(() => {
 
+                let cards = document.querySelectorAll(".card");
 
+                cards[reveledIndex1].textContent = "?";
+                cards[reveledIndex2].textContent = "?";
 
-        if(board[reveledIndex1!=reveledIndex2]){
-            revealed[reveledIndex1] = false;
-            revealed[reveledIndex2]=false
+                cards[reveledIndex1].classList.remove("revealed");
+                cards[reveledIndex2].classList.remove("revealed");
 
-            //card.classList.add("revealed"); za oba morm nastudirat kk bom setu nazaj
+                revealed[reveledIndex1] = false;
+                revealed[reveledIndex2] = false;
+            }, 700);
         }
 
+        revelCount = 0;
     }
-    else revelCount=0; 
-    
-
 }
+
