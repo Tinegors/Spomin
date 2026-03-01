@@ -30,6 +30,9 @@ let slike = {
 
 function zamenjajTemo() {
     const jeTemna = document.body.classList.toggle("dark-theme");
+    const karticaIgre = document.querySelector(".vse");
+    karticaIgre.classList.toggle("dark-panel", jeTemna);
+
     const gumbTema = document.getElementById("tema");
     gumbTema.textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
 }
