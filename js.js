@@ -6,6 +6,7 @@
     let revelCount=0;
     let reveledIndex1=0;
     let reveledIndex2=0;
+    let resene=0;
     let slike8 = [
         ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
             ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
@@ -47,9 +48,11 @@ function NaloziIgro() {
     ];
 
     document.getElementById("timer").textContent = "00:00";
+    document.getElementById("konec").textContent = "";
 
     clearInterval(timer);
     sekunde = 0;
+    resene=0;
 
     timer = setInterval(cas, 1000);
 
@@ -129,6 +132,14 @@ function reveal(i, card) {
                 revealed[reveledIndex1] = false;
                 revealed[reveledIndex2] = false;
             }, 700);
+        }
+        else{
+            resene+=1;
+
+            if(resene==size){
+                document.getElementById("konec").textContent = "BRAVO!!!!!! Rešil si spomin.";
+                clearInterval(timer);
+            }
         }
 
         revelCount = 0;
