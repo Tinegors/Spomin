@@ -7,24 +7,42 @@
     <link rel="stylesheet" href="css.css">
 </head>
 <body>
-    <h1>🧠 Spomin</h1>
-    <div class="vse">
-        <div class="set">
-            <select id="size">
-                <option value="4">2 x 4</option>
-                <option value="6" selected>3 x 4</option>
-                <option value="8">4 x 4</option>
-            </select>
-            <button id="start" onclick="NaloziIgro()">Začni igro</button>
-            <button id="tema" onclick="zamenjajTemo()">🌙 Temna tema</button>
-            <p id="timer">00:00</p>
-            <p id="konec"></p>
-        </div>
+    <h1>🧠 Igra Spomin</h1>
 
-        <div class="desno">
-            <div id="igra" class="igra"></div>
-        </div>
+    <div class="vse" id="panel">
+        <aside class="set">
+            <h2>Nastavitve</h2>
+            <p class="navodila">
+                Obrni dve kartici. Če sta enaki, po 2 sekundah izgineta.
+                Če nista enaki, se po 2 sekundah zapreta.
+                Cilj je najti vse pare v čim krajšem času in s čim manj poskusi.
+            </p>
+
+            <label for="size">Težavnost (št. parov)</label>
+            <select id="size">
+                <option value="4">4 pari (2 x 4)</option>
+                <option value="6" selected>6 parov (3 x 4)</option>
+                <option value="8">8 parov (4 x 4)</option>
+            </select>
+
+            <button id="start" onclick="naloziIgro()">Začni igro</button>
+            <button id="tema" onclick="zamenjajTemo()">🌙 Temna tema</button>
+            <button id="glasba" onclick="preklopiGlasbo()">🔈 Glasba: ON</button>
+
+            <div class="izpisi">
+                <p>⏱ Čas: <span id="timer">00:00</span></p>
+                <p>🖱 Poskusi: <span id="kliki">0</span></p>
+                <p>✅ Najdeni pari: <span id="pari">0</span></p>
+            </div>
+
+            <p id="konec"></p>
+        </aside>
+
+        <main class="desno">
+            <div id="igra" class="igra" aria-label="Igralno polje"></div>
+        </main>
     </div>
+
     <script src="js.js"></script>
 </body>
 </html>
