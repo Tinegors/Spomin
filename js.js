@@ -1,67 +1,45 @@
-const slike = [
-    "https://images.unsplash.com/photo-1518791841217-8f162f1e1131?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1470770841072-f978cf4d019e?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1526498460520-4c246339dccb?w=300&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1516117172878-fd2c41f4a759?w=300&auto=format&fit=crop"
+let size = 2;
+let timer;
+let sekunde = 0;
+let board = [];
+let revealed = [];
+let revelCount = 0;
+let reveledIndex1 = 0;
+let reveledIndex2 = 0;
+let resene = 0;
+
+let slike8 = [
+    ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
+    ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
 ];
 
-const hrbet = "https://images.unsplash.com/photo-1557683316-973673baf926?w=300&auto=format&fit=crop";
+let slike6 = [
+    ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
+    ["🌊", 2], ["🔥", 2]
+];
 
-let board = [];
-let odprte = [];
-let prviIndex = null;
-let drugiIndex = null;
-let zaklenjeno = false;
+let slike4 = [
+    ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2]
+];
 
-let sekunde = 0;
-let timer = null;
-let timerZagnan = false;
-
-let pariNajdeni = 0;
-let poskusi = 0;
-let pariSkupaj = 6;
+let slike = {
+    8: slike8,
+    6: slike6,
+    4: slike4
+};
 
 let glasbaVklop = true;
 let audioCtx = null;
 let osc = null;
 let gainNode = null;
 
-function premesaj(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-function posodobiIzpis() {
-    document.getElementById("timer").textContent = formatCas(sekunde);
-    document.getElementById("kliki").textContent = poskusi;
-    document.getElementById("pari").textContent = pariNajdeni;
-}
-
-function formatCas(sec) {
-    const m = String(Math.floor(sec / 60)).padStart(2, "0");
-    const s = String(sec % 60).padStart(2, "0");
-    return `${m}:${s}`;
-}
-
-function zagonTimerjaObPrvemKliki() {
-    if (timerZagnan) return;
-    timerZagnan = true;
-    timer = setInterval(() => {
-        sekunde += 1;
-        document.getElementById("timer").textContent = formatCas(sekunde);
-    }, 1000);
-}
-
 function zamenjajTemo() {
     const jeTemna = document.body.classList.toggle("dark-theme");
-    document.getElementById("panel").classList.toggle("dark-panel", jeTemna);
-    document.getElementById("tema").textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
+    const karticaIgre = document.querySelector(".vse");
+    karticaIgre.classList.toggle("dark-panel", jeTemna);
+
+    const gumbTema = document.getElementById("tema");
+    gumbTema.textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
 }
 
 function inicializirajGlasbo() {
@@ -79,11 +57,10 @@ function inicializirajGlasbo() {
 
 function zazeniGlasbo() {
     if (!glasbaVklop) return;
+
     inicializirajGlasbo();
 
-    if (osc) {
-        return;
-    }
+    if (osc) return;
 
     osc = audioCtx.createOscillator();
     osc.type = "sine";
@@ -101,101 +78,122 @@ function ustaviGlasbo() {
 
 function preklopiGlasbo() {
     glasbaVklop = !glasbaVklop;
-    const g = document.getElementById("glasba");
+    const gumbGlasba = document.getElementById("glasba");
 
     if (glasbaVklop) {
-        g.textContent = "🔈 Glasba: ON";
+        gumbGlasba.textContent = "🔈 Glasba: ON";
         zazeniGlasbo();
     } else {
-        g.textContent = "🔇 Glasba: OFF";
+        gumbGlasba.textContent = "🔇 Glasba: OFF";
         ustaviGlasbo();
     }
 }
 
-function naloziIgro() {
-    pariSkupaj = parseInt(document.getElementById("size").value, 10);
+function NaloziIgro() {
+    slike[8] = [
+        ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
+        ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
+    ];
 
-    clearInterval(timer);
-    timer = null;
-    timerZagnan = false;
-    sekunde = 0;
+    slike[6] = [
+        ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
+        ["🌊", 2], ["🔥", 2]
+    ];
 
-    pariNajdeni = 0;
-    poskusi = 0;
-    prviIndex = null;
-    drugiIndex = null;
-    zaklenjeno = false;
+    slike[4] = [
+        ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2]
+    ];
 
+    document.getElementById("timer").textContent = "00:00";
     document.getElementById("konec").textContent = "";
 
-    const izbor = [...slike].slice(0, pariSkupaj);
-    board = [...izbor, ...izbor];
-    premesaj(board);
+    clearInterval(timer);
+    sekunde = 0;
+    resene = 0;
+    revelCount = 0;
 
-    odprte = Array(board.length).fill(false);
+    timer = setInterval(cas, 1000);
+
+    size = parseInt(document.getElementById("size").value);
+
+    board = [];
+    revealed = [];
 
     const igraDiv = document.getElementById("igra");
     igraDiv.innerHTML = "";
 
-    board.forEach((_, i) => {
-        const card = document.createElement("button");
-        card.className = "card";
-        card.type = "button";
-        card.style.backgroundImage = `url('${hrbet}')`;
-        card.onclick = () => reveal(i);
-        igraDiv.appendChild(card);
-    });
+    igraDiv.style.gridTemplateColumns = `repeat(${4}, 1fr)`;
 
-    posodobiIzpis();
+    let izbraneSlike = slike[size];
+
+    for (let i = 0; i < size * 2;) {
+        let rnd = Math.floor(Math.random() * izbraneSlike.length);
+
+        if (izbraneSlike[rnd][1] > 0) {
+            revealed.push(false);
+
+            const card = document.createElement("div");
+            card.classList.add("card");
+            card.textContent = "?";
+
+            board[i] = izbraneSlike[rnd][0];
+            izbraneSlike[rnd][1] -= 1;
+
+            let index = i;
+            card.onclick = () => reveal(index, card);
+
+            igraDiv.appendChild(card);
+
+            i++;
+        }
+    }
 
     ustaviGlasbo();
     zazeniGlasbo();
 }
 
-function reveal(i) {
-    if (zaklenjeno || odprte[i]) return;
+function cas() {
+    sekunde++;
+    let m = String(Math.floor(sekunde / 60)).padStart(2, "0");
+    let s = String(sekunde % 60).padStart(2, "0");
+    document.getElementById("timer").textContent = `${m}:${s}`;
+}
 
-    zagonTimerjaObPrvemKliki();
+function reveal(i, card) {
+    if (revealed[i]) return;
 
-    const cards = document.querySelectorAll(".card");
-    cards[i].style.backgroundImage = `url('${board[i]}')`;
-    cards[i].classList.add("revealed");
-    odprte[i] = true;
+    revealed[i] = true;
+    card.textContent = board[i];
+    card.classList.add("revealed");
 
-    if (prviIndex === null) {
-        prviIndex = i;
-        return;
-    }
+    if (revelCount === 0) {
+        reveledIndex1 = i;
+        revelCount = 1;
+    } else {
+        reveledIndex2 = i;
 
-    drugiIndex = i;
-    zaklenjeno = true;
-    poskusi += 1;
-    document.getElementById("kliki").textContent = poskusi;
+        if (board[reveledIndex1] !== board[reveledIndex2]) {
+            setTimeout(() => {
+                let cards = document.querySelectorAll(".card");
 
-    const jePar = board[prviIndex] === board[drugiIndex];
+                cards[reveledIndex1].textContent = "?";
+                cards[reveledIndex2].textContent = "?";
 
-    setTimeout(() => {
-        if (jePar) {
-            cards[prviIndex].classList.add("hidden");
-            cards[drugiIndex].classList.add("hidden");
-            pariNajdeni += 1;
-            document.getElementById("pari").textContent = pariNajdeni;
+                cards[reveledIndex1].classList.remove("revealed");
+                cards[reveledIndex2].classList.remove("revealed");
 
-            if (pariNajdeni === pariSkupaj) {
-                clearInterval(timer);
-                document.getElementById("konec").textContent = `Bravo! Končal si v ${formatCas(sekunde)} in ${poskusi} poskusih.`;
-            }
+                revealed[reveledIndex1] = false;
+                revealed[reveledIndex2] = false;
+            }, 700);
         } else {
-            cards[prviIndex].style.backgroundImage = `url('${hrbet}')`;
-            cards[drugiIndex].style.backgroundImage = `url('${hrbet}')`;
-            cards[prviIndex].classList.remove("revealed");
-            cards[drugiIndex].classList.remove("revealed");
-            odprte[prviIndex] = false;
-            odprte[drugiIndex] = false;
+            resene += 1;
+
+            if (resene == size) {
+                document.getElementById("konec").textContent = "BRAVO!!!!!! Rešil si spomin.";
+                clearInterval(timer);
+            }
         }
 
-        prviIndex = null;
-        drugiIndex = null;
-        zaklenjeno = false;
-    }, 2000);
+        revelCount = 0;
+    }
 }
