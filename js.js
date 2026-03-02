@@ -7,6 +7,7 @@ let revelCount = 0;
 let reveledIndex1 = 0;
 let reveledIndex2 = 0;
 let resene = 0;
+let kliki=0;
 
 let slike8 = [
     ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
@@ -28,68 +29,17 @@ let slike = {
     4: slike4
 };
 
-let glasbaVklop = true;
-let audioCtx = null;
-let osc = null;
-let gainNode = null;
-
 function zamenjajTemo() {
     const jeTemna = document.body.classList.toggle("dark-theme");
     const karticaIgre = document.querySelector(".vse");
-    karticaIgre.classList.toggle("dark-panel", jeTemna);
+    karticaIgre.classList.toggle("temno", jeTemna);
 
     const gumbTema = document.getElementById("tema");
     gumbTema.textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
 }
 
-function inicializirajGlasbo() {
-    if (!audioCtx) {
-        const Ctx = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new Ctx();
-    }
-
-    if (!gainNode) {
-        gainNode = audioCtx.createGain();
-        gainNode.gain.value = 0.02;
-        gainNode.connect(audioCtx.destination);
-    }
-}
-
-function zazeniGlasbo() {
-    if (!glasbaVklop) return;
-
-    inicializirajGlasbo();
-
-    if (osc) return;
-
-    osc = audioCtx.createOscillator();
-    osc.type = "sine";
-    osc.frequency.value = 220;
-    osc.connect(gainNode);
-    osc.start();
-}
-
-function ustaviGlasbo() {
-    if (!osc) return;
-    osc.stop();
-    osc.disconnect();
-    osc = null;
-}
-
-function preklopiGlasbo() {
-    glasbaVklop = !glasbaVklop;
-    const gumbGlasba = document.getElementById("glasba");
-
-    if (glasbaVklop) {
-        gumbGlasba.textContent = "🔈 Glasba: ON";
-        zazeniGlasbo();
-    } else {
-        gumbGlasba.textContent = "🔇 Glasba: OFF";
-        ustaviGlasbo();
-    }
-}
-
 function NaloziIgro() {
+
     slike[8] = [
         ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
         ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
@@ -110,7 +60,6 @@ function NaloziIgro() {
     clearInterval(timer);
     sekunde = 0;
     resene = 0;
-    revelCount = 0;
 
     timer = setInterval(cas, 1000);
 
@@ -118,11 +67,14 @@ function NaloziIgro() {
 
     board = [];
     revealed = [];
+    revelCount = 0;
+    kliki=0;
 
     const igraDiv = document.getElementById("igra");
     igraDiv.innerHTML = "";
-
+    
     igraDiv.style.gridTemplateColumns = `repeat(${4}, 1fr)`;
+
 
     let izbraneSlike = slike[size];
 
@@ -131,26 +83,30 @@ function NaloziIgro() {
 
         if (izbraneSlike[rnd][1] > 0) {
             revealed.push(false);
+        
 
             const card = document.createElement("div");
             card.classList.add("card");
-            card.textContent = "?";
+            card.textContent = "KER spomin";
+        
 
             board[i] = izbraneSlike[rnd][0];
             izbraneSlike[rnd][1] -= 1;
+        
 
             let index = i;
             card.onclick = () => reveal(index, card);
+        
 
             igraDiv.appendChild(card);
+        
 
             i++;
         }
     }
-
-    ustaviGlasbo();
     zazeniGlasbo();
 }
+    
 
 function cas() {
     sekunde++;
@@ -160,40 +116,100 @@ function cas() {
 }
 
 function reveal(i, card) {
+    kliki++;
+    document.getElementById("kliki").textContent = "Število klikov: " + kliki;
     if (revealed[i]) return;
 
     revealed[i] = true;
     card.textContent = board[i];
-    card.classList.add("revealed");
+    card.classList.add("odkrito");
 
-    if (revelCount === 0) {
+    if (revelCount == 0) {
         reveledIndex1 = i;
         revelCount = 1;
-    } else {
+        
+    } 
+    else {
         reveledIndex2 = i;
 
         if (board[reveledIndex1] !== board[reveledIndex2]) {
+            
             setTimeout(() => {
+
                 let cards = document.querySelectorAll(".card");
 
-                cards[reveledIndex1].textContent = "?";
-                cards[reveledIndex2].textContent = "?";
+                cards[reveledIndex1].textContent = "KER spomin";
+                cards[reveledIndex2].textContent = "KER spomin";
 
-                cards[reveledIndex1].classList.remove("revealed");
-                cards[reveledIndex2].classList.remove("revealed");
+                cards[reveledIndex1].classList.remove("odkrito");
+                cards[reveledIndex2].classList.remove("odkrito");
 
                 revealed[reveledIndex1] = false;
                 revealed[reveledIndex2] = false;
-            }, 700);
-        } else {
+            }, 2000);
+        
+        } 
+        else {
             resene += 1;
+            document.getElementById("pari").textContent = "Število rešenih parov: " + resene;
+
+            setTimeout(() => {
+                let cards = document.querySelectorAll(".card");
+                cards[reveledIndex1].classList.add("resen");
+                cards[reveledIndex2].classList.add("resen");
+                cards[reveledIndex1].textContent = "";
+                cards[reveledIndex2].textContent = "";
+                cards[reveledIndex1].classList.remove("odkrito");
+                cards[reveledIndex2].classList.remove("odkrito");
+                cards[reveledIndex1].onclick="";
+                cards[reveledIndex2].onclick="";
+                cards[reveledIndex1].style.pointerEvents = "none";
+                cards[reveledIndex2].style.pointerEvents = "none";
+            }, 2000);
+            
+
 
             if (resene == size) {
                 document.getElementById("konec").textContent = "BRAVO!!!!!! Rešil si spomin.";
                 clearInterval(timer);
+                ustaviGlasbo();
+                document.getElementById("igraj").textContent = "Glasba: OFF";
             }
         }
 
         revelCount = 0;
+    }
+}
+
+
+let glasbaVklop = false;
+
+function preklopiGlasbo() {
+  glasbaVklop = !glasbaVklop;
+  const el = document.getElementById("glasba");
+  if (el) el.textContent = glasbaVklop ? "Glasba: ON" : "Glasba: OFF";
+  if (glasbaVklop) {
+    zazeniGlasbo();
+  } else {
+    ustaviGlasbo();
+  }
+}
+
+function zazeniGlasbo() {
+    document.getElementById("igraj").play();
+    document.getElementById("glasba").textContent = "Glasba: ON";
+    glasbaVklop=true;
+}
+  
+function ustaviGlasbo() {
+    document.getElementById("igraj").pause();
+    document.getElementById("glasba").textContent = "Glasba: OFF";
+    glasbaVklop=false;
+}
+
+function nastaviGlasnost(v) {
+    const audio = document.getElementById("igraj");
+    if (audio) {
+      audio.volume = v;
     }
 }

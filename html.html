@@ -7,9 +7,20 @@
     <link rel="stylesheet" href="css.css">
 </head>
 <body>
-    <h1>🧠 Spomin</h1>
+    <audio id="igraj" src="Poljubljena.mp3"></audio>
+    <h1>🧠 Igra Spomin 🧠</h1>
     <div class="vse">
         <div class="set">
+            
+            <h2>Navodila</h2>
+
+            <p class="navodila">
+                Obrni dve kartici. Če sta enaki, po 2 sekundah izgineta.
+                Če nista enaki, se po 2 sekundah zapreta.
+                Cilj je najti vse pare v čim krajšem času in s čim manj poskusi.
+            </p><br>
+            <h2>Nastavitve</h2>
+            <label for="size">Težavnost (št. parov)</label>
             <select id="size">
                 <option value="4">2 x 4</option>
                 <option value="6" selected>3 x 4</option>
@@ -17,9 +28,14 @@
             </select>
             <button id="start" onclick="NaloziIgro()">Začni igro</button>
             <button id="tema" onclick="zamenjajTemo()">🌙 Temna tema</button>
-            <button id="glasba" onclick="preklopiGlasbo()">🔈 Glasba: ON</button>
+            <button id="glasba" onclick="preklopiGlasbo()">Glasba: OFF</button>
             <p id="timer">00:00</p>
+            <p id="kliki">"Število klikov: 0</p>
+            <p id="pari">"Število rešenih parov: 0</p>
             <p id="konec"></p>
+            
+
+            <input type="range" min="0" max="1" step="0.01" value="0.2" oninput="nastaviGlasnost(this.value)">
         </div>
 
         <div class="desno">

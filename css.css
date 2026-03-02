@@ -20,7 +20,7 @@ body.dark-theme {
     background: #111827;
 }
 
-.vse.dark-panel {
+.vse.temno {
     background: #1f2937;
     color: #e5e7eb;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
@@ -32,18 +32,25 @@ body.dark-theme h1 {
 
 .vse {
     text-align: center;
-    background: #ffffff;
+    background: #e7e7e7;
     display: flex;
     gap: 10%;
     padding: 40px;
     border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
     width: min(90%, 1200px);
     min-height: 78vh;
+    transition: background-color 0.25s ease;
 }
 
 .desno {
     width: 753px;
+}
+
+.navodila {
+    line-height: 1.4;
+    font-size: 14px;
+    opacity: 0.95;
 }
 
 h1 {
@@ -73,15 +80,15 @@ button {
 }
 
 button {
-    background: #4f46e5;
+    background: #6a7f10;
     color: white;
     border: none;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: 0.2s;
 }
 
 button:hover {
-    background: #4338ca;
+    background: #6a7f10;
 }
 
 .igra {
@@ -90,7 +97,7 @@ button:hover {
 }
 
 .card {
-    background: #ffffff;
+    background: #888;
     border: 2px solid #333;
     border-radius: 12px;
     aspect-ratio: 1 / 1;
@@ -100,7 +107,7 @@ button:hover {
     font-size: 24px;
     font-weight: bold;
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: 0.2s;
     user-select: none;
 }
 
@@ -108,11 +115,14 @@ button:hover {
     background: #8e9eb4;
 }
 
-.card.revealed {
-    background: #4f46e5;
+.card.odkrito {
+    background: #6a7f10;
     color: white;
+    font-size: 50px;
 }
 
 #konec {
     min-height: 1.5em;
 }
+
+.resen { visibility: hidden; }
