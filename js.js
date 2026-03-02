@@ -17,12 +17,6 @@ let igra = {
 
 let glasbaVklop = false;
 
-function zamenjajTemo() {
-    const jeTemna = document.body.classList.toggle("dark-theme");
-    document.querySelector(".vse").classList.toggle("temno", jeTemna);
-    document.getElementById("tema").textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
-}
-
 function NaloziIgro() {
     resetStanjaIgre();
     pripraviDeck();
@@ -177,7 +171,7 @@ function obdelajPar() {
         document.getElementById("konec").textContent = "BRAVO!!!!!! Rešil si spomin.";
         clearInterval(igra.timer);
         ustaviGlasbo();
-        document.getElementById("igraj").textContent = "Glasba: OFF";
+        document.getElementById("igraj").textContent = "🎵 Glasba: OFF";
     }
 }
 
@@ -190,7 +184,7 @@ function resetOdprtPar() {
 function preklopiGlasbo() {
     glasbaVklop = !glasbaVklop;
     const gumb = document.getElementById("glasba");
-    gumb.textContent = glasbaVklop ? "Glasba: ON" : "Glasba: OFF";
+    gumb.textContent = glasbaVklop ? "🎵 Glasba: ON" : "🎵 Glasba: OFF";
 
     if (glasbaVklop) {
         zazeniGlasbo();
@@ -201,13 +195,13 @@ function preklopiGlasbo() {
 
 function zazeniGlasbo() {
     document.getElementById("igraj").play();
-    document.getElementById("glasba").textContent = "Glasba: ON";
+    document.getElementById("glasba").textContent = "🎵 Glasba: ON";
     glasbaVklop = true;
 }
 
 function ustaviGlasbo() {
     document.getElementById("igraj").pause();
-    document.getElementById("glasba").textContent = "Glasba: OFF";
+    document.getElementById("glasba").textContent = "🎵 Glasba: OFF";
     glasbaVklop = false;
 }
 
