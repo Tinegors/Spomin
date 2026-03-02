@@ -8,39 +8,54 @@
 </head>
 <body>
     <audio id="igraj" src="Poljubljena.mp3"></audio>
-    <h1>🧠 SPOMIN CHALLENGE</h1>
-    <div class="vse">
-        <div class="set">
-            
-            <h2>Navodila</h2>
 
-            <p class="navodila">
-                Obrni dve kartici. Če sta enaki, po 2 sekundah izgineta.
-                Če nista enaki, se po 2 sekundah zapreta.
-                Cilj je najti vse pare v čim krajšem času in s čim manj poskusi.
-            </p><br>
-            <h2>Nastavitve</h2>
-            <label for="size">Izberi velikost igre</label>
-            <select id="size">
-                <option value="4">2 x 4</option>
-                <option value="6" selected>3 x 4</option>
-                <option value="8">4 x 4</option>
-            </select>
-            <button id="start" onclick="NaloziIgro()">▶️ Nova igra</button>
-                        <button id="glasba" onclick="preklopiGlasbo()">🎵 Glasba: OFF</button>
-            <p id="timer">00:00</p>
-            <p id="kliki">Število klikov: 0</p>
-            <p id="pari">Število rešenih parov: 0</p>
-            <p id="konec"></p>
-            
+    <main class="app-shell">
+        <header class="hero">
+            <h1>🧠 SPOMIN CHALLENGE</h1>
+            <p>Najdi vse pare v čim krajšem času in s čim manj kliki.</p>
+        </header>
 
-            <input type="range" min="0" max="1" step="0.01" value="0.2" oninput="nastaviGlasnost(this.value)">
-        </div>
+        <section class="layout">
+            <aside class="panel panel-left">
+                <h2>Nastavitve</h2>
+                <label for="size">Izberi velikost igre</label>
+                <select id="size">
+                    <option value="4">2 x 4</option>
+                    <option value="6" selected>3 x 4</option>
+                    <option value="8">4 x 4</option>
+                </select>
 
-        <div class="desno">
-            <div id="igra" class="igra"></div>
-        </div>
-    </div>
+                <div class="actions">
+                    <button id="start" onclick="NaloziIgro()">▶️ Nova igra</button>
+                    <button id="glasba" onclick="preklopiGlasbo()">🎵 Glasba: OFF</button>
+                </div>
+
+                <div class="stats-grid">
+                    <p id="timer">00:00</p>
+                    <p id="kliki">Število klikov: 0</p>
+                    <p id="pari">Število rešenih parov: 0</p>
+                    <p id="konec"></p>
+                </div>
+
+                <label for="glasnost">Glasnost</label>
+                <input id="glasnost" type="range" min="0" max="1" step="0.01" value="0.2" oninput="nastaviGlasnost(this.value)">
+            </aside>
+
+            <section class="panel panel-game">
+                <div id="igra" class="igra"></div>
+            </section>
+
+            <aside class="panel panel-right">
+                <h2>Kako igrati</h2>
+                <p class="navodila">
+                    Obrni dve kartici. Če sta enaki, po 2 sekundah izgineta.
+                    Če nista enaki, se po 2 sekundah zapreta.
+                    Cilj je rešiti vse pare.
+                </p>
+            </aside>
+        </section>
+    </main>
+
     <script src="js.js"></script>
 </body>
 </html>
