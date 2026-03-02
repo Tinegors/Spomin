@@ -1,215 +1,217 @@
-let size = 2;
-let timer;
-let sekunde = 0;
-let board = [];
-let revealed = [];
-let revelCount = 0;
-let reveledIndex1 = 0;
-let reveledIndex2 = 0;
-let resene = 0;
-let kliki=0;
+const HRBTNA_STRAN = "🂠";
+const VSI_SIMBOLI = ["🍀", "🎯", "🧩", "🚲", "🎲", "🎸", "🌈", "⭐"];
 
-let slike8 = [
-    ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
-    ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
-];
-
-let slike6 = [
-    ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
-    ["🌊", 2], ["🔥", 2]
-];
-
-let slike4 = [
-    ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2]
-];
-
-let slike = {
-    8: slike8,
-    6: slike6,
-    4: slike4
+let igra = {
+    pari: 6,
+    timer: null,
+    sekunde: 0,
+    kliki: 0,
+    reseniPari: 0,
+    cakaj: false,
+    prviIndex: null,
+    drugiIndex: null,
+    deck: [],
+    odprto: [],
+    vezano: false
 };
-
-function zamenjajTemo() {
-    const jeTemna = document.body.classList.toggle("dark-theme");
-    const karticaIgre = document.querySelector(".vse");
-    karticaIgre.classList.toggle("temno", jeTemna);
-
-    const gumbTema = document.getElementById("tema");
-    gumbTema.textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
-}
-
-function NaloziIgro() {
-
-    slike[8] = [
-        ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
-        ["🌊", 2], ["🔥", 2], ["🌙", 2], ["🎭", 2]
-    ];
-
-    slike[6] = [
-        ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2],
-        ["🌊", 2], ["🔥", 2]
-    ];
-
-    slike[4] = [
-        ["🎨", 2], ["🎧", 2], ["🌍", 2], ["🚀", 2]
-    ];
-
-    document.getElementById("timer").textContent = "00:00";
-    document.getElementById("konec").textContent = "";
-
-    clearInterval(timer);
-    sekunde = 0;
-    resene = 0;
-
-    timer = setInterval(cas, 1000);
-
-    size = parseInt(document.getElementById("size").value);
-
-    board = [];
-    revealed = [];
-    revelCount = 0;
-    kliki=0;
-
-    const igraDiv = document.getElementById("igra");
-    igraDiv.innerHTML = "";
-    
-    igraDiv.style.gridTemplateColumns = `repeat(${4}, 1fr)`;
-
-
-    let izbraneSlike = slike[size];
-
-    for (let i = 0; i < size * 2;) {
-        let rnd = Math.floor(Math.random() * izbraneSlike.length);
-
-        if (izbraneSlike[rnd][1] > 0) {
-            revealed.push(false);
-        
-
-            const card = document.createElement("div");
-            card.classList.add("card");
-            card.textContent = "KER spomin";
-        
-
-            board[i] = izbraneSlike[rnd][0];
-            izbraneSlike[rnd][1] -= 1;
-        
-
-            let index = i;
-            card.onclick = () => reveal(index, card);
-        
-
-            igraDiv.appendChild(card);
-        
-
-            i++;
-        }
-    }
-    zazeniGlasbo();
-}
-    
-
-function cas() {
-    sekunde++;
-    let m = String(Math.floor(sekunde / 60)).padStart(2, "0");
-    let s = String(sekunde % 60).padStart(2, "0");
-    document.getElementById("timer").textContent = `${m}:${s}`;
-}
-
-function reveal(i, card) {
-    kliki++;
-    document.getElementById("kliki").textContent = "Število klikov: " + kliki;
-    if (revealed[i]) return;
-
-    revealed[i] = true;
-    card.textContent = board[i];
-    card.classList.add("odkrito");
-
-    if (revelCount == 0) {
-        reveledIndex1 = i;
-        revelCount = 1;
-        
-    } 
-    else {
-        reveledIndex2 = i;
-
-        if (board[reveledIndex1] !== board[reveledIndex2]) {
-            
-            setTimeout(() => {
-
-                let cards = document.querySelectorAll(".card");
-
-                cards[reveledIndex1].textContent = "KER spomin";
-                cards[reveledIndex2].textContent = "KER spomin";
-
-                cards[reveledIndex1].classList.remove("odkrito");
-                cards[reveledIndex2].classList.remove("odkrito");
-
-                revealed[reveledIndex1] = false;
-                revealed[reveledIndex2] = false;
-            }, 2000);
-        
-        } 
-        else {
-            resene += 1;
-            document.getElementById("pari").textContent = "Število rešenih parov: " + resene;
-
-            setTimeout(() => {
-                let cards = document.querySelectorAll(".card");
-                cards[reveledIndex1].classList.add("resen");
-                cards[reveledIndex2].classList.add("resen");
-                cards[reveledIndex1].textContent = "";
-                cards[reveledIndex2].textContent = "";
-                cards[reveledIndex1].classList.remove("odkrito");
-                cards[reveledIndex2].classList.remove("odkrito");
-                cards[reveledIndex1].onclick="";
-                cards[reveledIndex2].onclick="";
-                cards[reveledIndex1].style.pointerEvents = "none";
-                cards[reveledIndex2].style.pointerEvents = "none";
-            }, 2000);
-            
-
-
-            if (resene == size) {
-                document.getElementById("konec").textContent = "BRAVO!!!!!! Rešil si spomin.";
-                clearInterval(timer);
-                ustaviGlasbo();
-                document.getElementById("igraj").textContent = "Glasba: OFF";
-            }
-        }
-
-        revelCount = 0;
-    }
-}
-
 
 let glasbaVklop = false;
 
-function preklopiGlasbo() {
-  glasbaVklop = !glasbaVklop;
-  const el = document.getElementById("glasba");
-  if (el) el.textContent = glasbaVklop ? "Glasba: ON" : "Glasba: OFF";
-  if (glasbaVklop) {
+function zamenjajTemo() {
+    const jeTemna = document.body.classList.toggle("dark-theme");
+    document.querySelector(".vse").classList.toggle("temno", jeTemna);
+    document.getElementById("tema").textContent = jeTemna ? "☀️ Svetla tema" : "🌙 Temna tema";
+}
+
+function NaloziIgro() {
+    resetStanjaIgre();
+    pripraviDeck();
+    narisiPlosco();
+    if (!igra.vezano) {
+        poveziKlikNaPlosci();
+        igra.vezano = true;
+    }
+    igra.timer = setInterval(cas, 1000);
     zazeniGlasbo();
-  } else {
-    ustaviGlasbo();
-  }
+}
+
+function resetStanjaIgre() {
+    clearInterval(igra.timer);
+
+    igra.pari = parseInt(document.getElementById("size").value, 10);
+    igra.sekunde = 0;
+    igra.kliki = 0;
+    igra.reseniPari = 0;
+    igra.cakaj = false;
+    igra.prviIndex = null;
+    igra.drugiIndex = null;
+    igra.deck = [];
+    igra.odprto = [];
+
+    document.getElementById("timer").textContent = "00:00";
+    document.getElementById("kliki").textContent = "Število klikov: 0";
+    document.getElementById("pari").textContent = "Število rešenih parov: 0";
+    document.getElementById("konec").textContent = "";
+}
+
+function pripraviDeck() {
+    let aktivni = VSI_SIMBOLI.slice(0, igra.pari);
+    let podvojen = [];
+
+    for (let i = 0; i < aktivni.length; i++) {
+        podvojen.push(aktivni[i]);
+        podvojen.push(aktivni[i]);
+    }
+
+    for (let i = podvojen.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        const tmp = podvojen[i];
+        podvojen[i] = podvojen[j];
+        podvojen[j] = tmp;
+    }
+
+    igra.deck = podvojen;
+    igra.odprto = new Array(podvojen.length).fill(false);
+}
+
+function narisiPlosco() {
+    const igraDiv = document.getElementById("igra");
+    igraDiv.innerHTML = "";
+    igraDiv.style.gridTemplateColumns = "repeat(4, 1fr)";
+
+    for (let i = 0; i < igra.deck.length; i++) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.textContent = HRBTNA_STRAN;
+        card.dataset.index = String(i);
+        igraDiv.appendChild(card);
+    }
+}
+
+function poveziKlikNaPlosci() {
+    const igraDiv = document.getElementById("igra");
+
+    igraDiv.addEventListener("click", function (e) {
+        const card = e.target.closest(".card");
+        if (!card) return;
+        const index = Number(card.dataset.index);
+        reveal(index, card);
+    });
+}
+
+function cas() {
+    igra.sekunde += 1;
+    const m = String(Math.floor(igra.sekunde / 60)).padStart(2, "0");
+    const s = String(igra.sekunde % 60).padStart(2, "0");
+    document.getElementById("timer").textContent = m + ":" + s;
+}
+
+function reveal(index, card) {
+    igra.kliki += 1;
+    document.getElementById("kliki").textContent = "Število klikov: " + igra.kliki;
+
+    if (igra.cakaj) return;
+    if (igra.odprto[index]) return;
+
+    igra.odprto[index] = true;
+    card.classList.add("odkrito");
+    card.textContent = igra.deck[index];
+
+    if (igra.prviIndex === null) {
+        igra.prviIndex = index;
+        return;
+    }
+
+    igra.drugiIndex = index;
+    igra.cakaj = true;
+
+    const jePar = igra.deck[igra.prviIndex] === igra.deck[igra.drugiIndex];
+
+    if (jePar) {
+        obdelajPar();
+    } else {
+        obdelajNapacenPar();
+    }
+}
+
+function obdelajNapacenPar() {
+    setTimeout(function () {
+        const cards = document.querySelectorAll(".card");
+        const i1 = igra.prviIndex;
+        const i2 = igra.drugiIndex;
+
+        cards[i1].classList.remove("odkrito");
+        cards[i2].classList.remove("odkrito");
+        cards[i1].textContent = HRBTNA_STRAN;
+        cards[i2].textContent = HRBTNA_STRAN;
+
+        igra.odprto[i1] = false;
+        igra.odprto[i2] = false;
+
+        resetOdprtPar();
+    }, 2000);
+}
+
+function obdelajPar() {
+    igra.reseniPari += 1;
+    document.getElementById("pari").textContent = "Število rešenih parov: " + igra.reseniPari;
+
+    setTimeout(function () {
+        const cards = document.querySelectorAll(".card");
+        const i1 = igra.prviIndex;
+        const i2 = igra.drugiIndex;
+
+        cards[i1].classList.remove("odkrito");
+        cards[i2].classList.remove("odkrito");
+        cards[i1].classList.add("resen");
+        cards[i2].classList.add("resen");
+        cards[i1].textContent = "";
+        cards[i2].textContent = "";
+        cards[i1].style.pointerEvents = "none";
+        cards[i2].style.pointerEvents = "none";
+
+        resetOdprtPar();
+    }, 2000);
+
+    if (igra.reseniPari === igra.pari) {
+        document.getElementById("konec").textContent = "BRAVO!!!!!! Rešil si spomin.";
+        clearInterval(igra.timer);
+        ustaviGlasbo();
+        document.getElementById("igraj").textContent = "Glasba: OFF";
+    }
+}
+
+function resetOdprtPar() {
+    igra.prviIndex = null;
+    igra.drugiIndex = null;
+    igra.cakaj = false;
+}
+
+function preklopiGlasbo() {
+    glasbaVklop = !glasbaVklop;
+    const gumb = document.getElementById("glasba");
+    gumb.textContent = glasbaVklop ? "Glasba: ON" : "Glasba: OFF";
+
+    if (glasbaVklop) {
+        zazeniGlasbo();
+    } else {
+        ustaviGlasbo();
+    }
 }
 
 function zazeniGlasbo() {
     document.getElementById("igraj").play();
     document.getElementById("glasba").textContent = "Glasba: ON";
-    glasbaVklop=true;
+    glasbaVklop = true;
 }
-  
+
 function ustaviGlasbo() {
     document.getElementById("igraj").pause();
     document.getElementById("glasba").textContent = "Glasba: OFF";
-    glasbaVklop=false;
+    glasbaVklop = false;
 }
 
 function nastaviGlasnost(v) {
     const audio = document.getElementById("igraj");
-    if (audio) {
-      audio.volume = v;
-    }
+    if (audio) audio.volume = v;
 }

@@ -32,7 +32,7 @@ body.dark-theme h1 {
 
 .vse {
     text-align: center;
-    background: #e7e7e7;
+    background: linear-gradient(180deg, #ececec 0%, #e2e8f0 100%);
     display: flex;
     gap: 10%;
     padding: 40px;
@@ -80,7 +80,7 @@ button {
 }
 
 button {
-    background: #6a7f10;
+    background: #3b82f6;
     color: white;
     border: none;
     cursor: pointer;
@@ -88,7 +88,7 @@ button {
 }
 
 button:hover {
-    background: #6a7f10;
+    background: #2563eb;
 }
 
 .igra {
@@ -97,7 +97,7 @@ button:hover {
 }
 
 .card {
-    background: #888;
+    background: #6b7280;
     border: 2px solid #333;
     border-radius: 12px;
     aspect-ratio: 1 / 1;
@@ -116,7 +116,7 @@ button:hover {
 }
 
 .card.odkrito {
-    background: #6a7f10;
+    background: #0f766e;
     color: white;
     font-size: 50px;
 }
